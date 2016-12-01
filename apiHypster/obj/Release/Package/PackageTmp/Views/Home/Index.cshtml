@@ -1,0 +1,112 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+@*<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        input {
+            width: 100px;
+        }
+        input[type=radio] {
+            width: 15px;
+        }
+        #result {
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 14px;
+        }
+        p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 12px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+    <h2>HYPSTER.COM - API Services</h2>
+    <p>Verify username and password.</p>
+    <p>
+        Username: <input type="text" id="username" />
+        Password: <input type="password" id="password" />
+        Return: <input type="radio" name="output" value="JSON" checked="checked" /><b>JSON</b>
+        <input type="radio" name="output" value="XML" /><b>XML</b>
+        <input type="button" value="Verify" onclick="verifyUser()" />
+        <input type="button" id="DetailBtn" value="Detailed" onclick="detailInfoUser()" style="display:none" />
+        <input type="hidden" id="usernameH" />
+    </p>
+    <p><div id="result"></div></p>
+    <script type="text/javascript">
+        function verifyUser()
+        {
+            var errMsg = "";
+            if ($("#username").val() == "")
+            {
+                errMsg += "Username\n";
+            }
+            if ($("#password").val() == "")
+            {
+                errMsg += "Password\n";
+            }
+
+            if (errMsg != "") {
+                alert("Please fill out the following field(s):\n" + errMsg);
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    data: { Username: $("#username").val(), Password: $("#password").val() },
+                    dataType: "json",
+                    url: "/user/validate"
+                }).done(function (data) {
+                    if ($("input[type='radio']:checked").val() == "JSON")
+                    {
+                        $("#result").text(JSON.stringify(data));
+                    }
+                    else
+                    {
+                        $("#result").text("<response>" + objectToXml(data) + "</response>");
+                    }
+                }).error(function (jqXHR, textStatus, errorThrown) {
+                    $("#result").text(jqXHR.responseText || textStatus);
+                })
+            }
+        }
+
+        function objectToXml(obj)
+        {
+            var xml = '';
+            for (var prop in obj)
+            {
+                if (!obj.hasOwnProperty(prop))
+                    continue;
+
+                if (obj[prop] == undefined)
+                    continue;
+
+                xml += "<" + prop + ">";
+                if (typeof obj[prop] == "object")
+                    xml += objectToXml(new Object(obj[prop]));
+                else
+                    xml += obj[prop];
+                xml += "</" + prop + ">";
+            }
+            return xml;
+        }
+    </script>
+</body>
+</html>*@
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h2>HYPSTER.COM - API Services</h2>
+    <p>This is 'api.hypster.com' website which only provides web service APIs.</p>
+</body>
+</html>

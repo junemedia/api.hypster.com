@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Hypster_Entities-Web.config Connection String" description="Hypster_Entities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/hypster_tv_MODEL.csdl|res://*/hypster_tv_MODEL.ssdl|res://*/hypster_tv_MODEL.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=127.0.0.1;initial catalog=HypsterStage;Connect Timeout=15;Integrated Security=true;multipleactiveresultsets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\richard\\Desktop\\projects\\api\.hypster\.com\\apiHypster\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Hypster_Entities']/@connectionString" />
+  </parameter>
+</parameters>

@@ -1,0 +1,8 @@
+.vs
+.nuget
+
+*.bak
+
+*.pdb
+*.orig
+hypster/bin/*.xml
