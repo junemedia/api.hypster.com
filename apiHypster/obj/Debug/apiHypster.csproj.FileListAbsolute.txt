@@ -52,3 +52,4 @@ C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\bin\System.Web.Http
 C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\bin\System.Web.Http.WebHost.xml
 C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\obj\Debug\apiHypster.dll
 C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\obj\Debug\apiHypster.pdb
+C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\obj\Debug\apiHypster.csprojResolveAssemblyReference.cache

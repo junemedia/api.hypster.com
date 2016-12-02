@@ -9,6 +9,6 @@ namespace apiHypster.Models
         public string email { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string name { get; set; }
-        public int adminLevel { get; set; }
+        public int adminlevel { get; set; }
     }
 }

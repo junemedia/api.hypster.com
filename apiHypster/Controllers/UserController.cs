@@ -16,53 +16,88 @@ namespace apiHypster.Controllers
         public UserController() { }
         hypster_tv_DAL.memberManagement memberManager = new hypster_tv_DAL.memberManagement();
         hypster_tv_DAL.Member member = new hypster_tv_DAL.Member();
+        Resources res = new Resources();
         [HttpGet]
         public responseData validate()
         {
-            responseData obj = new responseData { status = "2", message = "API error: The requested resource does not support http method 'GET'." }; ;
+            responseData obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "API error: The requested resource does not support http method 'GET'." }; ;
             return obj;
         }
         [HttpPost]
         public responseData validate([FromBody] User user)
         {
             HttpRequest httpReq = HttpContext.Current.Request;
-            HttpContext.Current.Response.AppendHeader("ClientIPAddr", GetUserIP());            
+            string clientIp = GetUserIP();
             responseData obj = new responseData();
-            try
+            string foundIp = "";
+            foreach (string allow in res.allowIPAddress)
             {
-                member = memberManager.getMemberByUserName(user.Username);
-                string clientIp = HttpContext.Current.Response.Headers.GetValues("ClientIPAddr")[0];
-                if (clientIp == "66.117.119.138")
+                if (clientIp == allow)
                 {
+                    foundIp = allow;
+                    break;
+                }                    
+                else
+                    continue;
+
+            }
+            if (foundIp != "")
+            {
+                HttpContext.Current.Response.AddHeader("ClientIPAddr", clientIp);
+                try
+                {
+                    member = memberManager.getMemberByUserName(user.Username);
                     if (user.Username != null && user.Password != null)
                     {
                         if (member.username == "")
                         {
-                            obj = new responseData { status = "7", message = "User Not Found" };
+                            obj = new responseData { status = (int)Resources.xhrCode.NOT_FOUND, message = "User Not Found" };
                         }
                         else if (member.password != user.Password)
                         {
-                            obj = new responseData { status = "4", message = "Invalid Password" };
+                            obj = new responseData { status = (int)Resources.xhrCode.INVALID, message = "Invalid Password" };
                         }
                         else
                         {
-                            memberUser mem = new memberUser { id = member.id, username = member.username, email = member.email, name = member.name, adminLevel = member.adminLevel };
-                            obj = new responseData { status = "1", message = "Validation Successful", user = mem };
+                            memberUser mem = new memberUser { id = member.id, username = member.username, email = member.email, name = member.name, adminlevel = member.adminLevel };
+                            obj = new responseData { status = (int)Resources.xhrCode.OK, message = "Validation Successful", user = mem };
                         }
                     }
                     else
                     {
-                        obj = new responseData { status = "2", message = "API error: One (or both) of the field(s) missing: username & password" };
+                        obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "API error: One (or both) of the field(s) missing: username & password" };
                     }
                 }
-                else
-                    obj = new responseData { status = "2", message = "API error: Request Sent from an Unauthorized Location" };
+                catch (Exception e)
+                {
+                    HttpResponse httpRes = HttpContext.Current.Response;
+                    httpRes.Status = "500 Internal Server Error";
+                    httpRes.StatusCode = 500;
+                    httpRes.StatusDescription = "Internal Server Error during the process";
+                    httpRes.AddHeader("ClientIPAddr", clientIp);
+                    httpRes.AddHeader("Status", "500 Internal Server Error");
+                    httpRes.AddHeader("StatusCode", "500");
+                    httpRes.AddHeader("InnerException", e.InnerException.ToString());
+                    httpRes.AddHeader("Message", e.Message);
+                    httpRes.AddHeader("StackTrace", e.StackTrace);
+                    httpRes.Flush();
+                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "Internal Server Error during the process" };
+                }
             }
-            catch (Exception e)
+            else
             {
-                obj = new responseData { status = "0", message = "Exception - " + e.Message };
+                HttpResponse httpRes = HttpContext.Current.Response;
+                httpRes.ClearHeaders();
+                httpRes.Status = "403 Forbidden";
+                httpRes.StatusCode = 403;
+                httpRes.StatusDescription = "Unauthorized Location";
+                httpRes.AddHeader("ClientIPAddr", clientIp);
+                httpRes.AddHeader("Status", "403 Forbidden");
+                httpRes.AddHeader("StatusCode", "403");
+                httpRes.AddHeader("StatusDescription", "Unauthorized Location from the IP Address: " + clientIp);
+                httpRes.Flush();
             }
-            return obj;
+            return obj;        
         }
 
         private string GetUserIP()
