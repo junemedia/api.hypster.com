@@ -50,13 +50,9 @@ namespace apiHypster.Controllers
                     if (user.Username != null && user.Password != null)
                     {
                         if (member.username == "")
-                        {
                             obj = new responseData { status = (int)Resources.xhrCode.NOT_FOUND, message = "User Not Found" };
-                        }
                         else if (member.password != user.Password)
-                        {
                             obj = new responseData { status = (int)Resources.xhrCode.INVALID, message = "Invalid Password" };
-                        }
                         else
                         {
                             memberUser mem = new memberUser { id = member.id, username = member.username, email = member.email, name = member.name, adminlevel = member.adminLevel };
@@ -64,9 +60,7 @@ namespace apiHypster.Controllers
                         }
                     }
                     else
-                    {
                         obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "API error: One (or both) of the field(s) missing: username & password" };
-                    }
                 }
                 catch (Exception e)
                 {
@@ -96,8 +90,9 @@ namespace apiHypster.Controllers
                 httpRes.AddHeader("StatusCode", "403");
                 httpRes.AddHeader("StatusDescription", "Unauthorized Location from the IP Address: " + clientIp);
                 httpRes.Flush();
+                obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "Unauthorized Location from the IP Address: " + clientIp };
             }
-            return obj;        
+            return obj;
         }
 
         private string GetUserIP()
@@ -107,34 +102,19 @@ namespace apiHypster.Controllers
 
             //test for non-standard proxy server designations of client's IP
             if (httpReq.ServerVariables["HTTP_CLIENT_IP"] != null)
-            {
                 strIP = httpReq.ServerVariables["HTTP_CLIENT_IP"].ToString();
-            }
             else if (httpReq.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
-            {
                 strIP = httpReq.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
-            }
-            //test for host address reported by the server
-            else if
-            (
-                //if exists
-                (httpReq.UserHostAddress.Length != 0)
-                &&
-                //and if not localhost IPV6 or localhost name
-                ((httpReq.UserHostAddress != "::1") || (httpReq.UserHostAddress != "localhost"))
-            )
-            {
+            //test for host address reported by the server: if exists and if not localhost IPV6 or localhost name
+            else if ((httpReq.UserHostAddress.Length != 0) && ((httpReq.UserHostAddress != "::1") || (httpReq.UserHostAddress != "localhost")))
                 strIP = httpReq.UserHostAddress;
-            }
             //finally, if all else fails, get the IP from a web scrape of another server: Check IP: This means No IP Address was Found.
             else
             {
                 WebRequest request = WebRequest.Create("http://checkip.thismeansnoipaddfound.com/");
                 using (WebResponse response = request.GetResponse())
                 using (StreamReader sr = new StreamReader(response.GetResponseStream()))
-                {
                     strIP = sr.ReadToEnd();
-                }
                 //scrape ip from the html
                 int i1 = strIP.IndexOf("Address: ") + 9;
                 int i2 = strIP.LastIndexOf("</body>");
