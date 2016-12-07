@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace apiHypster.Models
 {
@@ -10,5 +11,9 @@ namespace apiHypster.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string name { get; set; }
         public int adminlevel { get; set; }
+        public string country { get; set; }
+        public string city { get; set; }
+        public string zipcode { get; set; }
+        public string birth { get; set; }
     }
 }

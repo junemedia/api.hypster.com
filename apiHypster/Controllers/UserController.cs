@@ -17,31 +17,23 @@ namespace apiHypster.Controllers
         hypster_tv_DAL.memberManagement memberManager = new hypster_tv_DAL.memberManagement();
         hypster_tv_DAL.Member member = new hypster_tv_DAL.Member();
         Resources res = new Resources();
+        //bool test = false;
+        [Route("user/validate")]
         [HttpGet]
         public responseData validate()
         {
             responseData obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "API error: The requested resource does not support http method 'GET'." }; ;
             return obj;
         }
+        [Route("user/validate")]
         [HttpPost]
         public responseData validate([FromBody] User user)
         {
-            HttpRequest httpReq = HttpContext.Current.Request;
-            string clientIp = GetUserIP();
+            HttpRequest httpReq = HttpContext.Current.Request;            
             responseData obj = new responseData();
-            string foundIp = "";
-            foreach (string allow in res.allowIPAddress)
-            {
-                if (clientIp == allow)
-                {
-                    foundIp = allow;
-                    break;
-                }                    
-                else
-                    continue;
-
-            }
-            if (foundIp != "")
+            string clientIp = res.GetUserIP();
+            //if (test?true:res.checkIpAddr(clientIp))
+            if (res.checkIpAddr(clientIp))
             {
                 HttpContext.Current.Response.AddHeader("ClientIPAddr", clientIp);
                 try
@@ -55,7 +47,17 @@ namespace apiHypster.Controllers
                             obj = new responseData { status = (int)Resources.xhrCode.INVALID, message = "Invalid Password" };
                         else
                         {
-                            memberUser mem = new memberUser { id = member.id, username = member.username, email = member.email, name = member.name, adminlevel = member.adminLevel };
+                            memberUser mem = new memberUser {
+                                id = member.id,
+                                username = member.username,
+                                email = member.email,
+                                name = member.name,
+                                country = (member.country != "" ? member.country.ToLower() : null),
+                                city = (member.city != "" ? member.city.ToLower() : null),
+                                zipcode = (member.zipcode != "" ? member.zipcode.ToLower() : null),
+                                birth = Convert.ToDateTime(member.birth).ToString("MM/dd/yyyy"),
+                                adminlevel = member.adminLevel
+                            };
                             obj = new responseData { status = (int)Resources.xhrCode.OK, message = "Validation Successful", user = mem };
                         }
                     }
@@ -95,32 +97,67 @@ namespace apiHypster.Controllers
             return obj;
         }
 
-        private string GetUserIP()
+        [Route("user/{userId:int}")]
+        public responseData getUser(int userId)
         {
-            string strIP = String.Empty;
-            HttpRequest httpReq = HttpContext.Current.Request;
-
-            //test for non-standard proxy server designations of client's IP
-            if (httpReq.ServerVariables["HTTP_CLIENT_IP"] != null)
-                strIP = httpReq.ServerVariables["HTTP_CLIENT_IP"].ToString();
-            else if (httpReq.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
-                strIP = httpReq.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
-            //test for host address reported by the server: if exists and if not localhost IPV6 or localhost name
-            else if ((httpReq.UserHostAddress.Length != 0) && ((httpReq.UserHostAddress != "::1") || (httpReq.UserHostAddress != "localhost")))
-                strIP = httpReq.UserHostAddress;
-            //finally, if all else fails, get the IP from a web scrape of another server: Check IP: This means No IP Address was Found.
+            HttpResponse httpRes = HttpContext.Current.Response;
+            responseData obj = new responseData();
+            string clientIp = res.GetUserIP();
+            //if (test?true:res.checkIpAddr(clientIp))
+            if (res.checkIpAddr(clientIp))
+            {
+                HttpContext.Current.Response.AddHeader("ClientIPAddr", clientIp);
+                try
+                {
+                    member = memberManager.getMemberByID(userId);
+                    if (member.id != 0)
+                    {
+                        memberUser mem = new memberUser
+                        {
+                            id = member.id,
+                            username = member.username,
+                            email = member.email,
+                            name = member.name,
+                            country = (member.country!=""?member.country.ToLower() : null),
+                            city = (member.city != "" ? member.city.ToLower() : null),
+                            zipcode = (member.zipcode != "" ? member.zipcode.ToLower() : null),
+                            birth = Convert.ToDateTime(member.birth).ToString("MM/dd/yyyy"),
+                            adminlevel = member.adminLevel
+                        };
+                        obj = new responseData { status = (int)Resources.xhrCode.OK, message = "User Found", user = mem };
+                    }
+                    else
+                        obj = new responseData { status = (int)Resources.xhrCode.NOT_FOUND, message = "User Not Found" };
+                }
+                catch (Exception e)
+                {
+                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "Internal Server Error during the process" };
+                    httpRes.Status = "500 Internal Server Error";
+                    httpRes.StatusCode = 500;
+                    httpRes.StatusDescription = "Internal Server Error during the process";
+                    httpRes.AddHeader("ClientIPAddr", clientIp);
+                    httpRes.AddHeader("Status", "500 Internal Server Error");
+                    httpRes.AddHeader("StatusCode", "500");
+                    httpRes.AddHeader("InnerException", e.InnerException.ToString());
+                    httpRes.AddHeader("Message", e.Message);
+                    httpRes.AddHeader("StackTrace", e.StackTrace);
+                    httpRes.Flush();
+                }
+            }
             else
             {
-                WebRequest request = WebRequest.Create("http://checkip.thismeansnoipaddfound.com/");
-                using (WebResponse response = request.GetResponse())
-                using (StreamReader sr = new StreamReader(response.GetResponseStream()))
-                    strIP = sr.ReadToEnd();
-                //scrape ip from the html
-                int i1 = strIP.IndexOf("Address: ") + 9;
-                int i2 = strIP.LastIndexOf("</body>");
-                strIP = strIP.Substring(i1, i2 - i1);
+                obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "Unauthorized Location from the IP Address: " + clientIp };
+                httpRes.ClearHeaders();
+                httpRes.Status = "403 Forbidden";
+                httpRes.StatusCode = 403;
+                httpRes.StatusDescription = "Unauthorized Location";
+                httpRes.AddHeader("ClientIPAddr", clientIp);
+                httpRes.AddHeader("Status", "403 Forbidden");
+                httpRes.AddHeader("StatusCode", "403");
+                httpRes.AddHeader("StatusDescription", "Unauthorized Location from the IP Address: " + clientIp);
+                httpRes.Flush();
             }
-            return strIP;
+            return obj;
         }
     }
 }
