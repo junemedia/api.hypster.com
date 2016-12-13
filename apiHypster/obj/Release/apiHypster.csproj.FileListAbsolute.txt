@@ -53,3 +53,4 @@ C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\bin\System.Web.Http
 C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\obj\Release\apiHypster.csprojResolveAssemblyReference.cache
 C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\obj\Release\apiHypster.dll
 C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\obj\Release\apiHypster.pdb
+C:\Users\richard\Desktop\projects\api.hypster.com\apiHypster\bin\hypster_tv_DAL.pdb
