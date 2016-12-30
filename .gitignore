@@ -5,4 +5,7 @@
 
 *.pdb
 *.orig
-hypster/bin/*.xml
+bin/*.xml
+obj/
+
+Web.config

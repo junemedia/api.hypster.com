@@ -10,7 +10,7 @@ namespace apiHypster.Models
     public class Resources
     {
         public enum xhrCode { OK = 1, ERROR, AUTH, INVALID, DUPLICATE, EXPIRED, NOT_FOUND, INCOMPLETE, HUMAN };
-        public string[] allowIPAddress = { "66.117.119.138", "23.253.156.54", "127.0.0.1","10.0.0.114" };
+        public string[] allowIPAddress = { "66.117.119.138", "23.253.156.54", "127.0.0.1", "10.0.0.114", "162.242.221.47" };
         public List<string> properties = (from t in typeof(hypster_tv_DAL.Member).GetProperties() select t.Name).ToList();
         public string GetUserIP()
         {
@@ -60,12 +60,16 @@ namespace apiHypster.Models
         {
             string querystream = "";
             if (member.username != user.username) querystream += "username='" + user.username + "'";
-            if (member.password != user.password) querystream += ((querystream!="")?",":"") + "password='" + user.password + "'";
-            if (member.email != user.email) querystream += ((querystream != "") ? "," : "") + "email='" + user.email + "'";
+            //if (member.password != user.password) querystream += ((querystream!="")?",":"") + "password='" + user.password + "'";            
             if (member.name != user.name) querystream += ((querystream != "") ? "," : "") + "name='" + user.name + "'";
-            if (member.country != user.country) querystream += ((querystream != "") ? "," : "") + "country='" + user.country + "'";
+            if (member.email != user.email) querystream += ((querystream != "") ? "," : "") + "email='" + user.email + "'";
+            if (member.first_name != user.firstname) querystream += ((querystream != "") ? "," : "") + "first_name='" + user.firstname + "'";
+            if (member.last_name != user.lastname) querystream += ((querystream != "") ? "," : "") + "last_name='" + user.lastname + "'";
+            if (member.address != user.address) querystream += ((querystream != "") ? "," : "") + "address='" + user.address + "'";
             if (member.city != user.city) querystream += ((querystream != "") ? "," : "") + "city='" + user.city + "'";
+            if (member.state != user.state) querystream += ((querystream != "") ? "," : "") + "state='" + user.state + "'";
             if (member.zipcode != user.zipcode) querystream += ((querystream != "") ? "," : "") + "zipcode='" + user.zipcode + "'";
+            if (member.country != user.country) querystream += ((querystream != "") ? "," : "") + "country='" + user.country + "'";
             if (Convert.ToDateTime(member.birth).ToString("MM/dd/yyyy") != Convert.ToDateTime(user.birth).ToString("MM/dd/yyyy")) querystream += ((querystream != "") ? "," : "") + "birth='" + user.birth + "'";
             if (member.introduce != user.introduce) querystream += ((querystream != "") ? "," : "") + "introduce='" + user.introduce + "'";
             if (member.sex != user.sex) querystream += ((querystream != "") ? "," : "") + "sex=" + user.sex;
@@ -95,12 +99,16 @@ namespace apiHypster.Models
             memberUser mem = new memberUser();
             mem.id = ((user.id == 0) ? member.id : user.id);
             mem.username = (user.username != null ? user.username : member.username);
-            mem.password = (user.password != null ? user.password : member.password);
-            mem.email = (user.email != null ? user.email : member.email);
+            //mem.password = (user.password != null ? user.password : member.password);
             mem.name = (user.name != null ? user.name : member.name);
-            mem.country = (user.country != null ? user.country : member.country);
+            mem.email = (user.email != null ? user.email : member.email);
+            mem.firstname = (user.firstname != null ? user.firstname : member.first_name);
+            mem.lastname = (user.lastname != null ? user.lastname : member.last_name);
+            mem.address = (user.address != null ? user.address : member.address);
             mem.city = (user.city != null ? user.city : member.city);
+            mem.state = (user.state != null ? user.state : member.state);
             mem.zipcode = (user.zipcode != null ? user.zipcode : member.zipcode);
+            mem.country = (user.country != null ? user.country : member.country);
             mem.birth = (user.birth != null ? Convert.ToDateTime(user.birth).ToString("MM/dd/yyyy") : Convert.ToDateTime(member.birth).ToString("MM/dd/yyyy"));
             mem.introduce = (user.introduce != null ? user.introduce : member.introduce);
             mem.sex = (user.sex != null ? Convert.ToSByte(user.sex) : Convert.ToSByte(member.sex));

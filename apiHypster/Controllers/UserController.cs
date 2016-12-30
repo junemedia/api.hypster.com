@@ -25,6 +25,7 @@ namespace apiHypster.Controllers
         public responseData validate([FromBody] User user)
         {
             HttpRequest httpReq = HttpContext.Current.Request;
+            HttpResponse httpRes = HttpContext.Current.Response;
             responseData obj = new responseData();
             memberUser mem = new memberUser();
             string clientIp = res.GetUserIP();
@@ -52,17 +53,15 @@ namespace apiHypster.Controllers
                 }
                 catch (Exception e)
                 {
-                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "Internal Server Error during the process" };
-                    HttpResponse httpRes = HttpContext.Current.Response;
+                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = e.ToString() };
                     httpRes.Status = "500 Internal Server Error";
                     httpRes.StatusCode = 500;
-                    httpRes.StatusDescription = "Internal Server Error during the process";
+                    httpRes.StatusDescription = "500 ISE: General Exception";
                     httpRes.Flush();
                 }
             }
             else
             {
-                HttpResponse httpRes = HttpContext.Current.Response;
                 httpRes.ClearHeaders();
                 httpRes.Status = "403 Forbidden";
                 httpRes.StatusCode = 403;
@@ -101,7 +100,7 @@ namespace apiHypster.Controllers
                 }
                 catch (Exception e)
                 {
-                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "Internal Server Error during the process" };
+                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = e.ToString() };
                     httpRes.Status = "500 Internal Server Error";
                     httpRes.StatusCode = 500;
                     httpRes.StatusDescription = "Internal Server Error during the process";
@@ -168,9 +167,25 @@ namespace apiHypster.Controllers
                     else
                         obj = new responseData { status = (int)Resources.xhrCode.NOT_FOUND, message = "User Not Found" };
                 }
+                catch (ArgumentNullException ane)
+                {
+                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = ane.ToString() };
+                    httpRes.Status = "500 Internal Server Error";
+                    httpRes.StatusCode = 500;
+                    httpRes.StatusDescription = "500 ISE: ArgumentNullException";
+                    httpRes.Flush();
+                }
+                catch (FormatException fe)
+                {
+                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = fe.ToString() };
+                    httpRes.Status = "500 Internal Server Error";
+                    httpRes.StatusCode = 500;
+                    httpRes.StatusDescription = "500 ISE: FormatException";
+                    httpRes.Flush();
+                }
                 catch (Exception e)
                 {
-                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "Internal Server Error during the process" };
+                    obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = e.ToString() };
                     httpRes.Status = "500 Internal Server Error";
                     httpRes.StatusCode = 500;
                     httpRes.StatusDescription = "Internal Server Error during the process";
