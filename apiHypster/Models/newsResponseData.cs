@@ -2,14 +2,15 @@
 
 namespace apiHypster.Models
 {
-    public class responseData
+    public class newsResponseData
     {
-        public responseData() { }
+
+        public newsResponseData() { }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int status { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string message { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public memberUser user { get; set; }
-    }    
+        public newsPosts[] content { get; set; }
+    }
 }
