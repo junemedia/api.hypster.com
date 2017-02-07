@@ -12,7 +12,7 @@ namespace apiHypster.Controllers
         memberManagement memberManager = new memberManagement();
         Member member = new Member();
         Resources res = new Resources();
-        //bool test = true;
+
         [Route("user/validate")]
         [HttpGet]
         public responseData validate()
@@ -20,6 +20,7 @@ namespace apiHypster.Controllers
             responseData obj = new responseData { status = (int)Resources.xhrCode.ERROR, message = "API error: The requested resource does not support http method 'GET'." };
             return obj;
         }
+
         [Route("user/validate")]
         [HttpPost]
         public responseData validate([FromBody] User user)
@@ -29,7 +30,6 @@ namespace apiHypster.Controllers
             responseData obj = new responseData();
             memberUser mem = new memberUser();
             string clientIp = res.GetUserIP();
-            //if (test?true:res.checkIpAddr(clientIp))
             if (res.checkIpAddr(clientIp))
             {
                 HttpContext.Current.Response.AddHeader("ClientIPAddr", clientIp);
@@ -83,7 +83,6 @@ namespace apiHypster.Controllers
             responseData obj = new responseData();
             memberUser mem = new memberUser();
             string clientIp = res.GetUserIP();
-            //if (test?true:res.checkIpAddr(clientIp))
             if (res.checkIpAddr(clientIp))
             {
                 HttpContext.Current.Response.AddHeader("ClientIPAddr", clientIp);
@@ -122,6 +121,7 @@ namespace apiHypster.Controllers
             }
             return obj;
         }
+
         [Route("user/{userId:int}")]
         [HttpPut]
         public responseData putUser([FromUri] int userId, [FromBody] memberUser user)
@@ -133,7 +133,7 @@ namespace apiHypster.Controllers
             string clientIp = res.GetUserIP();
             string querystream = "";
             string message = "";
-            //if (test?true:res.checkIpAddr(clientIp))
+
             if (res.checkIpAddr(clientIp))
             {
                 try
