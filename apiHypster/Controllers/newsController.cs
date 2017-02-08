@@ -1,9 +1,11 @@
 ﻿using apiHypster.Models;
 using hypster_tv_DAL;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
+
 
 namespace apiHypster.Controllers
 {

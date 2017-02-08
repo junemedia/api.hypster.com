@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Net.Http.Headers;
+using System.Web.Http;
 
 namespace apiHypster
 {
@@ -21,6 +22,7 @@ namespace apiHypster
                 routeTemplate: "{controller}/{action}/{username}",
                 defaults: new { controller = "User", username = RouteParameter.Optional }
             );
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
         }
     }
 }
