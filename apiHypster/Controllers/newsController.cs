@@ -43,6 +43,7 @@ namespace apiHypster.Controllers
                 httpRes.StatusCode = 500;
                 httpRes.StatusDescription = "Internal Server Error during the process";
                 httpRes.Flush();
+                httpRes.End();
             }
             return obj;
         }
@@ -115,6 +116,7 @@ namespace apiHypster.Controllers
                 httpRes.StatusCode = 500;
                 httpRes.StatusDescription = "Internal Server Error during the process";
                 httpRes.Flush();
+                httpRes.End();
             }
             return obj;
         }

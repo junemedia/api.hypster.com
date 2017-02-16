@@ -58,6 +58,7 @@ namespace apiHypster.Controllers
                     httpRes.StatusCode = 500;
                     httpRes.StatusDescription = "500 ISE: General Exception";
                     httpRes.Flush();
+                    httpRes.End();
                 }
             }
             else
@@ -71,6 +72,7 @@ namespace apiHypster.Controllers
                 httpRes.AddHeader("StatusCode", "403");
                 httpRes.AddHeader("StatusDescription", "Unauthorized Location from the IP Address: " + clientIp);
                 httpRes.Flush();
+                httpRes.End();
                 obj = new userResponseData { status = (int)Resources.xhrCode.ERROR, message = "Unauthorized Location from the IP Address: " + clientIp };
             }
             return obj;
@@ -104,6 +106,7 @@ namespace apiHypster.Controllers
                     httpRes.StatusCode = 500;
                     httpRes.StatusDescription = "Internal Server Error during the process";
                     httpRes.Flush();
+                    httpRes.End();
                 }
             }
             else
@@ -118,6 +121,7 @@ namespace apiHypster.Controllers
                 httpRes.AddHeader("StatusCode", "403");
                 httpRes.AddHeader("StatusDescription", "Unauthorized Location from the IP Address: " + clientIp);
                 httpRes.Flush();
+                httpRes.End();
             }
             return obj;
         }
@@ -173,6 +177,7 @@ namespace apiHypster.Controllers
                     httpRes.StatusCode = 500;
                     httpRes.StatusDescription = "500 ISE: ArgumentNullException";
                     httpRes.Flush();
+                    httpRes.End();
                 }
                 catch (FormatException fe)
                 {
@@ -181,6 +186,7 @@ namespace apiHypster.Controllers
                     httpRes.StatusCode = 500;
                     httpRes.StatusDescription = "500 ISE: FormatException";
                     httpRes.Flush();
+                    httpRes.End();
                 }
                 catch (Exception e)
                 {
@@ -189,6 +195,7 @@ namespace apiHypster.Controllers
                     httpRes.StatusCode = 500;
                     httpRes.StatusDescription = "Internal Server Error during the process";
                     httpRes.Flush();
+                    httpRes.End();
                 }
             }
             else
@@ -203,6 +210,7 @@ namespace apiHypster.Controllers
                 httpRes.AddHeader("StatusCode", "403");
                 httpRes.AddHeader("StatusDescription", "Unauthorized Location from the IP Address: " + clientIp);
                 httpRes.Flush();
+                httpRes.End();
             }
             return obj;
         }
