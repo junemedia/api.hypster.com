@@ -13,13 +13,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/30/2016 12:54:41</publishTime>
     </File>
     <File Include="bin/apiHypster.dll">
-      <publishTime>02/16/2017 14:22:39</publishTime>
+      <publishTime>02/16/2017 16:42:41</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>11/30/2016 12:54:41</publishTime>
     </File>
     <File Include="bin/hypster_tv_DAL.dll">
-      <publishTime>02/16/2017 11:50:42</publishTime>
+      <publishTime>02/16/2017 15:47:58</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/07/2015 19:04:38</publishTime>
