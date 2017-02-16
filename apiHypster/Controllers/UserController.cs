@@ -26,7 +26,6 @@ namespace apiHypster.Controllers
         [HttpPost]
         public userResponseData validate([FromBody] User user)
         {
-            HttpRequest httpReq = HttpContext.Current.Request;
             HttpResponse httpRes = HttpContext.Current.Response;
             userResponseData obj = new userResponseData();
             memberUser mem = new memberUser();
@@ -127,7 +126,6 @@ namespace apiHypster.Controllers
         [HttpPut]
         public userResponseData putUser([FromUri] int userId, [FromBody] memberUser user)
         {
-            HttpRequest httpReq = HttpContext.Current.Request;
             HttpResponse httpRes = HttpContext.Current.Response;
             memberUser mem = new memberUser();
             userResponseData obj = new userResponseData();

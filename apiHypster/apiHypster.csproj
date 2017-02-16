@@ -150,8 +150,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\content.cs" />
+    <Compile Include="Models\featuredObj.cs" />
     <Compile Include="Models\memberUser.cs" />
-    <Compile Include="Models\newsPosts.cs" />
+    <Compile Include="Models\item.cs" />
+    <Compile Include="Models\newsFeaturedData.cs" />
     <Compile Include="Models\newsResponseData.cs" />
     <Compile Include="Models\Resources.cs" />
     <Compile Include="Models\userResponseData.cs" />
@@ -167,6 +170,7 @@
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="Properties\PublishProfiles\apiHypster.pubxml" />
+    <None Include="Properties\PublishProfiles\apiHypsterLocal.pubxml" />
     <None Include="Properties\PublishProfiles\apiHypsterStage.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

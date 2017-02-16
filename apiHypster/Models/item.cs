@@ -1,6 +1,6 @@
 ﻿namespace apiHypster.Models
 {
-    public class newsPosts
+    public class item
     {
         public string href { get; set; }
         public string imgsrc { get; set; }
