@@ -8,14 +8,14 @@ using System.Web.Http;
 
 namespace apiHypster.Controllers
 {
-    public class NewsController : ApiController
+    public class PostsController : ApiController
     {
         Resources res = new Resources();
         newsManagement newsManager = new newsManagement();
         newsManagement_Admin newsManager_admin = new newsManagement_Admin();
         List<newsPost> nPost = new List<newsPost>();
         int maxLength = 20;
-        [Route("news/feed")]
+        [Route("posts/feed")]
         [HttpGet]
         public newsResponseData feed()
         {
@@ -47,9 +47,9 @@ namespace apiHypster.Controllers
             return obj;
         }
 
-        [Route("news/weekly")]
+        [Route("posts/daily")]
         [HttpGet]
-        public newsFeaturedData weekly()
+        public newsFeaturedData daily()
         {
             HttpResponse httpRes = HttpContext.Current.Response;
             newsFeaturedData obj = new newsFeaturedData();
@@ -70,8 +70,10 @@ namespace apiHypster.Controllers
                     newest_feature.imgsrc = (Featured[0].post_image != null && Featured[0].post_image != "") ? "http://hypster.com/imgs/i_posts/" + Featured[0].post_image : null;
                     newest_feature.title = Featured[0].post_title;
                     exclude_id = Featured[0].post_id;
+                    newest.featured = newest_feature;
                 }
-                newest.featured = newest_feature;                
+                else
+                    newest.featured = null;
                 List<sp_postNewsletter_GetPostsByAttribute_Result> Newsletter = newsManager_admin.GetPostsByAttribute(exclude_id, "Newsletter");
                 if (Newsletter.Count > 0)
                 {

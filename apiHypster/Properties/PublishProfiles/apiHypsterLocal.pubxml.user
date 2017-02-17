@@ -18,8 +18,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/ApplicationInsights.config">
       <publishTime>11/30/2016 12:54:41</publishTime>
     </File>
+    <File Include="bin/App_global.asax.compiled">
+      <publishTime>02/17/2017 10:36:08</publishTime>
+    </File>
+    <File Include="bin/App_global.asax.dll">
+      <publishTime>02/17/2017 10:36:08</publishTime>
+    </File>
     <File Include="bin/hypster_tv_DAL.dll">
-      <publishTime>02/16/2017 15:47:58</publishTime>
+      <publishTime>02/17/2017 09:53:37</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/07/2015 19:04:38</publishTime>
@@ -119,6 +125,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="packages.config">
       <publishTime>11/30/2016 12:54:41</publishTime>
+    </File>
+    <File Include="PrecompiledApp.config">
+      <publishTime>02/17/2017 10:36:06</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>12/30/2016 15:40:05</publishTime>

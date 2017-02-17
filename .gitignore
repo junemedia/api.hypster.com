@@ -6,6 +6,5 @@
 *.pdb
 *.orig
 bin/*.xml
-obj/
-
+[Oo]bj/
 Web.config
